@@ -1,6 +1,6 @@
 {
   "name": "simple-static",
-  "description": "Several simple methods for serving static files",
+  "description": "A set of simple functions for serving static files",
   "author": "Mark McKelvy",
   "version": "1.0.0",
   "main": "simple-static.js",
@@ -11,7 +11,7 @@
   "licenses": [
     {
       "type": "MIT",
-      "url": "http://github.com/Matt-Esch/http-hash/raw/master/LICENSE"
+      "url": "https://github.com/mmckelvy/simple-static/blob/master/LICENSE.txt"
     }
   ],
   "dependencies": {
