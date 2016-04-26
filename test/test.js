@@ -149,3 +149,29 @@ test('Should send a 400 for a directory request', function(t) {
     t.end();
   });
 });
+
+test('Should return the proper file headers', function(t) {
+  // Set up the test server.
+  const server = http.createServer(function(req, res) {
+    simpleStatic(req, res, {rootDir: __dirname});
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  // Make a request to the server.
+  const options = {
+    protocol: 'http:',
+    hots: 'localhost',
+    port: 3000,
+    method: 'GET',
+    path: '/testfiles/styles.css',
+  };
+
+  http.get(options, function(res) {
+    t.equal(res.headers['content-type'], 'text/css', 'Should return proper headers');
+    server.close();
+    t.end();
+  });
+});
