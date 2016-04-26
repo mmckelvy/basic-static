@@ -59,3 +59,93 @@ test('Should return a 404 for a file that does not exist', function(t) {
     t.end();
   });
 });
+
+test('Should return a 304 for matching etag', function(t) {
+
+  // Set up the test server.
+  const server = http.createServer(function(req, res) {
+    simpleStatic(req, res, {rootDir: __dirname, cache: 'no-cache'});
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  // Make a request to the server.
+  const options = {
+    protocol: 'http:',
+    hots: 'localhost',
+    port: 3000,
+    method: 'GET',
+    path: '/testfiles/main.js'
+  };
+
+  // First request.
+  http.get(options, function(res1) {
+
+    // Get the etag
+    const eTag = res1.headers['etag'];
+    const moreOpts = Object.assign({}, options, {headers: {'if-none-match': eTag}});
+
+    // Send another request with that etag
+    http.get(moreOpts, function(res2) {
+      t.equal(res2.statusCode, 304, 'Should return a 304');
+      server.close();
+      t.end();
+    });
+  });
+});
+
+test('Should set the proper cache-control header', function(t) {
+  const cache = 'private, max-age=600';
+
+  // Set up the test server.
+  const server = http.createServer(function(req, res) {
+    simpleStatic(req, res, {rootDir: __dirname, cache: cache});
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  // Make a request to the server.
+  const options = {
+    protocol: 'http:',
+    hots: 'localhost',
+    port: 3000,
+    method: 'GET',
+    path: '/testfiles/main.js',
+  };
+
+  http.get(options, function(res) {
+    t.equal(res.headers['cache-control'], cache, 'Should set the proper header');
+    server.close();
+    t.end();
+  });
+});
+
+test('Should send a 400 for a directory request', function(t) {
+  // Set up the test server.
+  const server = http.createServer(function(req, res) {
+    simpleStatic(req, res, {rootDir: __dirname});
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  // Make a request to the server.
+  const options = {
+    protocol: 'http:',
+    hots: 'localhost',
+    port: 3000,
+    method: 'GET',
+    path: '/testfiles',
+  };
+
+  http.get(options, function(res) {
+    t.equal(res.statusCode, 400, 'Should return a 400');
+    server.close();
+    t.end();
+  });
+});
