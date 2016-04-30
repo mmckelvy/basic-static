@@ -176,7 +176,7 @@ test('Should return the proper file headers', function(t) {
   });
 });
 
-test('Should try to serve compressed file as if options.compress is true', function(t) {
+test('Should try to serve compressed file if options.compress is true', function(t) {
   // Set up the test server.
   const server = http.createServer(function(req, res) {
     simpleStatic(req, res, {rootDir: __dirname, compress: true});
