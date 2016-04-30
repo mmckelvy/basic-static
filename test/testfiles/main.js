@@ -1,8 +1,7 @@
 'use strict';
 
-function helloWorld() {
-  return 'Hello world again!';
+function hello() {
+  console.log('hello');
 }
 
-console.log(helloWorld());
-
+hello();
