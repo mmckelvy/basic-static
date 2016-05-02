@@ -221,7 +221,7 @@ test('Should use uncompressed file if the compressed file does not exist', funct
     port: 3000,
     method: 'GET',
     headers: {'Accept-Encoding': 'gzip'},
-    path: '/testfiles/styles.css.gz'
+    path: '/testfiles/styles.css'
   };
 
   http.get(options, function(res) {
