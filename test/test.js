@@ -20,7 +20,7 @@ test('Should return a 200 response for a requested file', function(t) {
   // Make a request to the server.
   const options = {
     protocol: 'http:',
-    hots: 'localhost',
+    host: 'localhost',
     port: 3000,
     method: 'GET',
     path: '/testfiles/main.js'
@@ -47,7 +47,7 @@ test('Should return a 404 for a file that does not exist', function(t) {
   // Make a request to the server.
   const options = {
     protocol: 'http:',
-    hots: 'localhost',
+    host: 'localhost',
     port: 3000,
     method: 'GET',
     path: '/testfiles/not-found.js'
@@ -74,7 +74,7 @@ test('Should return a 304 for matching etag', function(t) {
   // Make a request to the server.
   const options = {
     protocol: 'http:',
-    hots: 'localhost',
+    host: 'localhost',
     port: 3000,
     method: 'GET',
     path: '/testfiles/main.js'
@@ -111,7 +111,7 @@ test('Should set the proper cache-control header', function(t) {
   // Make a request to the server.
   const options = {
     protocol: 'http:',
-    hots: 'localhost',
+    host: 'localhost',
     port: 3000,
     method: 'GET',
     path: '/testfiles/main.js',
@@ -137,7 +137,7 @@ test('Should send a 400 for a directory request', function(t) {
   // Make a request to the server.
   const options = {
     protocol: 'http:',
-    hots: 'localhost',
+    host: 'localhost',
     port: 3000,
     method: 'GET',
     path: '/testfiles',
@@ -163,7 +163,7 @@ test('Should return the proper file headers', function(t) {
   // Make a request to the server.
   const options = {
     protocol: 'http:',
-    hots: 'localhost',
+    host: 'localhost',
     port: 3000,
     method: 'GET',
     path: '/testfiles/styles.css',
@@ -189,7 +189,7 @@ test('Should try to serve compressed file if options.compress is true', function
   // Make a request to the server.
   const options = {
     protocol: 'http:',
-    hots: 'localhost',
+    host: 'localhost',
     port: 3000,
     method: 'GET',
     headers: {'Accept-Encoding': 'gzip'},
@@ -198,6 +198,34 @@ test('Should try to serve compressed file if options.compress is true', function
 
   http.get(options, function(res) {
     t.equal(res.headers['content-encoding'], 'gzip', 'Set proper encoding');
+
+    server.close();
+    t.end();
+  });
+});
+
+test('Should use uncompressed file if the compressed file does not exist', function(t) {
+  // Set up the test server.
+  const server = http.createServer(function(req, res) {
+    simpleStatic(req, res, {rootDir: __dirname, compress: true});
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  // Make a request to the server.
+  const options = {
+    protocol: 'http:',
+    host: 'localhost',
+    port: 3000,
+    method: 'GET',
+    headers: {'Accept-Encoding': 'gzip'},
+    path: '/testfiles/styles.css.gz'
+  };
+
+  http.get(options, function(res) {
+    t.equal(res.statusCode, 200);
 
     server.close();
     t.end();
