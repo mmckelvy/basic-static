@@ -133,14 +133,16 @@ function serveFile(req, res, stats, filePath, cache, compress) {
       'Content-Type': mime.lookup(filePath),
       'ETag': createServerEtag(stats.ino, stats.mtime),
       'Cache-Control': cache,
-      'Content-Encoding': 'gzip'
+      'Content-Encoding': 'gzip',
+      'Content-Length': stats.size
     });
 
   } else {
     res.writeHead(200, {
       'Content-Type': mime.lookup(filePath),
       'ETag': createServerEtag(stats.ino, stats.mtime),
-      'Cache-Control': cache
+      'Cache-Control': cache,
+      'Content-Length': stats.size
     });
   }
 
