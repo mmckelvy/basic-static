@@ -36,9 +36,8 @@ routes.set('/static/*', basicStatic);
 
 `options.cache {String}` -- `Cache-Control` headers. Defaults to `max-age=86400` (24 hours).
 
-`options.compress {Boolean}` -- Check for a gzipped version of the file. Note does not actually do the compression, just looks for a `.
+`options.compress {Boolean}` -- Check for a gzipped version of the file. Does not actually do the compression, just looks for a `.
 gz` version of the file as appropriate.
-
 
 # License
 MIT
