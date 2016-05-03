@@ -32,6 +32,32 @@ test('Should return a 200 response for a requested file', function(t) {
   });
 });
 
+test('Should handle versioning querystrings', function(t) {
+  const serveStatic = basicStatic({rootDir: __dirname});
+
+  const server = http.createServer(function(req, res) {
+    serveStatic(req, res);
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  const options = {
+    protocol: 'http:',
+    host: 'localhost',
+    port: 3000,
+    method: 'GET',
+    path: '/testfiles/main.js?v=123'
+  };
+
+  http.get(options, function(res) {
+    t.equal(res.statusCode, 200, 'Should return a 200');
+    server.close();
+    t.end();
+  });
+});
+
 test('Should return a 404 for a file that does not exist', function(t) {
   const serveStatic = basicStatic({rootDir: __dirname});
 

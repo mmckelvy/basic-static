@@ -8,15 +8,16 @@ Basic static file serving for use with Node's `http.createServer`.
 Use as the sole route handler:
 ```
 const basicStatic = require('basic-static');
+const serveStatic = basicStatic({rootDir: __dirname, compress: true});
 
 const server = http.createServer(function(req, res) {
-  basicStatic(req, res, {rootDir: __dirname, compress: true});
+  serveStatic(req, res);
 });
 ```
 
 Or add as one of many route handlers:
 ```
-routes.set('/static/*', basicStatic);
+routes.set('/static/*', serveStatic);
 ```
 
 # Methodology
@@ -25,18 +26,15 @@ Employs standard strategies to manage static resources:
 + Sets an `e-tag` using an md5 hash of the file's inode number and `mTime` (modified time).
 + Checks for a compressed (gzipped) version of the file if `options.compress` is set to true and the `accept-encoding` header is sent with the file request.
 
-As the name suggests, this module is meant to take care of the essentials and not much more. It assumes you are serving files from a relatively simple structure and you are good with strong e-tags and gzip compression. 
+As the name suggests, this module is meant to take care of the essentials and not much more. It assumes you are serving files from a relatively simple structure with a reasonable URL and you are good with strong e-tags and gzip compression.
 
 # Test
 `npm test`
 
 # API
-### `basicStatic(req, res, [options])`
+### `basicStatic([options])`
 
-#### `req, res`
-`Object`:
-`req, res` are the usual Node.js request and response objects (instances of `http.IncomingMessage` and `http.ServerResponse` respectively).
-
+### Arguments
 #### `options`
 `{Object}` with three properties -- `rootDir`, `cache`, and `compress`.
 

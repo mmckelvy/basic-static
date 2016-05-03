@@ -3,6 +3,7 @@
 const fs = require('fs');
 const crypto = require('crypto');
 const path = require('path');
+const url = require('url');
 const mime = require('mime');
 
 /**
@@ -150,19 +151,19 @@ function serveFile(req, res, stats, filePath, cache, compress) {
 * @function basicStatic
 * @public
 *
-* @param: req {Object} Node request object.
-* @param: res {Object} Node response object.
 * @param: options {Object} Possible options are as follows:
 *   options.rootDir {String} Root directory. Defaults to process.cwd()
 *   options.cache {String} Cache-Control headers. Defaults to 24hrs.
 *   options.compress {Boolean} Serve a gzipped version of the file.
+*
+* @returns: a {Function} to handle the request
 */
 function basicStatic(options) {
-  return function handler(req, res) {
+  return function serveStatic(req, res) {
     if (!options) options = {};
 
     const rootDir = options.rootDir ? options.rootDir : process.cwd();
-    const basePath = path.join(rootDir, req.url);
+    const basePath = path.join(rootDir, url.parse(req.url).pathname);
     const compress = options.compress && req.headers['accept-encoding'] ? true : false;
 
     if (compress) {
