@@ -1,6 +1,6 @@
 {
-  "name": "simple-static",
-  "description": "A set of simple functions for serving static files",
+  "name": "basic-static",
+  "description": "Basic static file serving for use with Node's http.createServer",
   "author": "Mark McKelvy",
   "version": "1.0.0",
   "main": "basic-static.js",
