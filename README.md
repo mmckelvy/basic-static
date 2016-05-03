@@ -21,7 +21,7 @@ const server = http.createServer(function(req, res) {
 # Methodology
 Employs standard strategies to manage static resources:
 + Sets `Cache-Control` headers (default value of `max-age=86400`) to prevent superfluous requests from the browser.
-+ Sets an `e-tag` using an md5 hash of the file's inode number and `mTime` (modified time).
++ Sets an `e-tag` using an md5 hash of the file's inode number and `mTime` (modified time) and uses this `e-tag` to return a `304` response if appropriate.
 + Checks for a compressed (gzipped) version of the file if `options.compress` is set to true and the `accept-encoding` header is sent with the file request.
 
 All files are served by piping a readable stream to Node's writable response stream.
