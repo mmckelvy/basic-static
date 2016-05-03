@@ -25,6 +25,8 @@ Employs standard strategies to manage static resources:
 + Sets an `e-tag` using an md5 hash of the file's inode number and `mTime` (modified time).
 + Checks for a compressed (gzipped) version of the file if `options.compress` is set to true and the `accept-encoding` header is sent with the file request.
 
+As the name suggests, this module is meant to take care of the essentials and not much more. It assumes you are serving files from a relatively simple structure and you are good with strong e-tags and gzip compression. 
+
 # Test
 `npm test`
 

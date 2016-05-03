@@ -7,10 +7,11 @@ const test = require('tape');
 const basicStatic = require('../basic-static');
 
 test('Should return a 200 response for a requested file', function(t) {
+  const static = basicStatic({rootDir: __dirname});
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname});
+    static(req, res);
   });
 
   server.listen(3000, function() {
@@ -34,10 +35,11 @@ test('Should return a 200 response for a requested file', function(t) {
 });
 
 test('Should return a 404 for a file that does not exist', function(t) {
+  const static = basicStatic({rootDir: __dirname});
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname});
+    static(req, res);
   });
 
   server.listen(3000, function() {
@@ -61,10 +63,11 @@ test('Should return a 404 for a file that does not exist', function(t) {
 });
 
 test('Should return a 404 when the directory does not exist', function(t) {
+  const static = basicStatic({rootDir: __dirname});
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname});
+    static(req, res);
   });
 
   server.listen(3000, function() {
@@ -88,10 +91,11 @@ test('Should return a 404 when the directory does not exist', function(t) {
 });
 
 test('Should return a 304 for matching etag', function(t) {
+  const static = basicStatic({rootDir: __dirname, cache: 'no-cache'});
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname, cache: 'no-cache'});
+    static(req, res);
   });
 
   server.listen(3000, function() {
@@ -125,10 +129,11 @@ test('Should return a 304 for matching etag', function(t) {
 
 test('Should set the proper cache-control header', function(t) {
   const cache = 'private, max-age=600';
+  const static = basicStatic({rootDir: __dirname, cache: cache});
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname, cache: cache});
+    static(req, res);
   });
 
   server.listen(3000, function() {
@@ -152,16 +157,16 @@ test('Should set the proper cache-control header', function(t) {
 });
 
 test('Should send a 400 for a directory request', function(t) {
-  // Set up the test server.
+  const static = basicStatic({rootDir: __dirname});
+
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname});
+    static(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -178,7 +183,6 @@ test('Should send a 400 for a directory request', function(t) {
 });
 
 test('Should return the proper file headers', function(t) {
-  // Set up the test server.
   const server = http.createServer(function(req, res) {
     basicStatic(req, res, {rootDir: __dirname});
   });

@@ -157,16 +157,34 @@ function serveFile(req, res, stats, filePath, cache, compress) {
 *   options.cache {String} Cache-Control headers. Defaults to 24hrs.
 *   options.compress {Boolean} Serve a gzipped version of the file.
 */
-function basicStatic(req, res, options) {
-  if (!options) options = {};
+function basicStatic(options) {
+  return function handler(req, res) {
+    if (!options) options = {};
 
-  const rootDir = options.rootDir ? options.rootDir : process.cwd();
-  const basePath = path.join(rootDir, req.url);
-  const compress = options.compress && req.headers['accept-encoding'] ? true : false;
+    const rootDir = options.rootDir ? options.rootDir : process.cwd();
+    const basePath = path.join(rootDir, req.url);
+    const compress = options.compress && req.headers['accept-encoding'] ? true : false;
 
-  if (compress) {
-    checkCompress(basePath, function(err, filePath) {
-      statFile(filePath, function(err, stats) {
+    if (compress) {
+      checkCompress(basePath, function(err, filePath) {
+        statFile(filePath, function(err, stats) {
+          if (err) {
+            res.writeHead(err.httpCode, {'Content-Type': 'application/json'});
+            res.end(JSON.stringify(err));
+
+          } else if (should304(req, stats)) {
+            res.writeHead(304);
+            res.end();
+
+          } else {
+            const cache = options.cache ? options.cache : 'max-age=86400';
+            serveFile(req, res, stats, filePath, cache, compress);
+          }
+        });
+      });
+
+    } else {
+      statFile(basePath, function(err, stats) {
         if (err) {
           res.writeHead(err.httpCode, {'Content-Type': 'application/json'});
           res.end(JSON.stringify(err));
@@ -177,26 +195,10 @@ function basicStatic(req, res, options) {
 
         } else {
           const cache = options.cache ? options.cache : 'max-age=86400';
-          serveFile(req, res, stats, filePath, cache, compress);
+          serveFile(req, res, stats, basePath, cache);
         }
       });
-    });
-
-  } else {
-    statFile(basePath, function(err, stats) {
-      if (err) {
-        res.writeHead(err.httpCode, {'Content-Type': 'application/json'});
-        res.end(JSON.stringify(err));
-
-      } else if (should304(req, stats)) {
-        res.writeHead(304);
-        res.end();
-
-      } else {
-        const cache = options.cache ? options.cache : 'max-age=86400';
-        serveFile(req, res, stats, basePath, cache);
-      }
-    });
+    }
   }
 }
 
