@@ -81,7 +81,7 @@ function checkCompress(basePath, callback) {
 function createServerEtag(inode, mTime) {
 
   // Create a string from the file inode and mtime.
-  var str = inode.toString() + mTime.getTime().toString();
+  const str = inode.toString() + mTime.getTime().toString();
 
   return crypto.createHash('md5').update(str).digest('hex');
 }
@@ -96,10 +96,10 @@ function createServerEtag(inode, mTime) {
 * @returns {Boolean}
 */
 function should304(req, stats) {
-  var clientEtag = req.headers['if-none-match'];
+  const clientEtag = req.headers['if-none-match'];
 
   if (!clientEtag) return false;
-  var serverEtag = createServerEtag(stats.ino, stats.mtime);
+  const serverEtag = createServerEtag(stats.ino, stats.mtime);
 
   if (serverEtag !== clientEtag) return false;
 
@@ -119,7 +119,7 @@ function should304(req, stats) {
 *
 */
 function serveFile(req, res, stats, filePath, cache, compress) {
-  var stream = fs.createReadStream(filePath);
+  const stream = fs.createReadStream(filePath);
 
   stream.on('error', function(err) {
     const error = new Error('Error reading file');
