@@ -7,18 +7,16 @@ const test = require('tape');
 const basicStatic = require('../basic-static');
 
 test('Should return a 200 response for a requested file', function(t) {
-  const static = basicStatic({rootDir: __dirname});
+  const serveStatic = basicStatic({rootDir: __dirname});
 
-  // Set up the test server.
   const server = http.createServer(function(req, res) {
-    static(req, res);
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -35,18 +33,16 @@ test('Should return a 200 response for a requested file', function(t) {
 });
 
 test('Should return a 404 for a file that does not exist', function(t) {
-  const static = basicStatic({rootDir: __dirname});
+  const serveStatic = basicStatic({rootDir: __dirname});
 
-  // Set up the test server.
   const server = http.createServer(function(req, res) {
-    static(req, res);
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -63,18 +59,16 @@ test('Should return a 404 for a file that does not exist', function(t) {
 });
 
 test('Should return a 404 when the directory does not exist', function(t) {
-  const static = basicStatic({rootDir: __dirname});
+  const serveStatic = basicStatic({rootDir: __dirname});
 
-  // Set up the test server.
   const server = http.createServer(function(req, res) {
-    static(req, res);
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -91,18 +85,16 @@ test('Should return a 404 when the directory does not exist', function(t) {
 });
 
 test('Should return a 304 for matching etag', function(t) {
-  const static = basicStatic({rootDir: __dirname, cache: 'no-cache'});
+  const serveStatic = basicStatic({rootDir: __dirname, cache: 'no-cache'});
 
-  // Set up the test server.
   const server = http.createServer(function(req, res) {
-    static(req, res);
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -129,18 +121,16 @@ test('Should return a 304 for matching etag', function(t) {
 
 test('Should set the proper cache-control header', function(t) {
   const cache = 'private, max-age=600';
-  const static = basicStatic({rootDir: __dirname, cache: cache});
+  const serveStatic = basicStatic({rootDir: __dirname, cache: cache});
 
-  // Set up the test server.
   const server = http.createServer(function(req, res) {
-    static(req, res);
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -157,10 +147,10 @@ test('Should set the proper cache-control header', function(t) {
 });
 
 test('Should send a 400 for a directory request', function(t) {
-  const static = basicStatic({rootDir: __dirname});
+  const serveStatic = basicStatic({rootDir: __dirname});
 
   const server = http.createServer(function(req, res) {
-    static(req, res);
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
@@ -183,15 +173,16 @@ test('Should send a 400 for a directory request', function(t) {
 });
 
 test('Should return the proper file headers', function(t) {
+  const serveStatic = basicStatic({rootDir: __dirname});
+
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname});
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -208,16 +199,16 @@ test('Should return the proper file headers', function(t) {
 });
 
 test('Should try to serve compressed file if options.compress is true', function(t) {
-  // Set up the test server.
+  const serveStatic = basicStatic({rootDir: __dirname, compress: true});
+
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname, compress: true});
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
@@ -236,16 +227,16 @@ test('Should try to serve compressed file if options.compress is true', function
 });
 
 test('Should use uncompressed file if the compressed file does not exist', function(t) {
-  // Set up the test server.
+  const serveStatic = basicStatic({rootDir: __dirname, compress: true});
+
   const server = http.createServer(function(req, res) {
-    basicStatic(req, res, {rootDir: __dirname, compress: true});
+    serveStatic(req, res);
   });
 
   server.listen(3000, function() {
     console.log('Server started');
   });
 
-  // Make a request to the server.
   const options = {
     protocol: 'http:',
     host: 'localhost',
