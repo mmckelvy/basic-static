@@ -60,6 +60,33 @@ test('Should return a 404 for a file that does not exist', function(t) {
   });
 });
 
+test('Should return a 404 when the directory does not exist', function(t) {
+
+  // Set up the test server.
+  const server = http.createServer(function(req, res) {
+    basicStatic(req, res, {rootDir: __dirname});
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  // Make a request to the server.
+  const options = {
+    protocol: 'http:',
+    host: 'localhost',
+    port: 3000,
+    method: 'GET',
+    path: '/some-other-dir/not-found.js'
+  };
+
+  http.get(options, function(res) {
+    t.equal(res.statusCode, 404, 'Should return a 404');
+    server.close();
+    t.end();
+  });
+});
+
 test('Should return a 304 for matching etag', function(t) {
 
   // Set up the test server.
