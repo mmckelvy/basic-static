@@ -154,7 +154,7 @@ function serveFile(req, res, stats, filePath, cache, compress) {
 * @param: options {Object} Possible options are as follows:
 *   options.rootDir {String} Root directory. Defaults to process.cwd()
 *   options.cache {String} Cache-Control headers. Defaults to 24hrs.
-*   options.compress {Boolean} Serve a gzipped version of the file.
+*   options.compress {Boolean} Serve a gzipped version of the file. Defaults to false.
 *
 * @returns: a {Function} to handle the request
 */

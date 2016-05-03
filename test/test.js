@@ -1,7 +1,6 @@
 'use strict';
 
 const http = require('http');
-const url = require('url');
 const test = require('tape');
 
 const basicStatic = require('../basic-static');
@@ -172,7 +171,7 @@ test('Should set the proper cache-control header', function(t) {
   });
 });
 
-test('Should send a 400 for a directory request', function(t) {
+test('Should send a 400 for an existing directory request', function(t) {
   const serveStatic = basicStatic({rootDir: __dirname});
 
   const server = http.createServer(function(req, res) {
@@ -198,7 +197,7 @@ test('Should send a 400 for a directory request', function(t) {
   });
 });
 
-test('Should return the proper file headers', function(t) {
+test('Should set the proper mime type', function(t) {
   const serveStatic = basicStatic({rootDir: __dirname});
 
   const server = http.createServer(function(req, res) {
@@ -277,5 +276,72 @@ test('Should use uncompressed file if the compressed file does not exist', funct
 
     server.close();
     t.end();
+  });
+});
+
+test('Should send a 200 and a new etag if file changes', function(t) {
+  const fs = require('fs');
+  const path = require('path');
+
+  const file = path.join(__dirname, 'testfiles', 'change.js');
+  console.log('THE FILE', file);
+  const serveStatic = basicStatic({rootDir: __dirname, cache: 'no-cache'});
+
+  const server = http.createServer(function(req, res) {
+    serveStatic(req, res);
+  });
+
+  server.listen(3000, function() {
+    console.log('Server started');
+  });
+
+  const options = {
+    protocol: 'http:',
+    host: 'localhost',
+    port: 3000,
+    method: 'GET',
+    path: '/testfiles/change.js'
+  };
+
+  // First request
+  http.get(options, function(res1) {
+
+    // Get the etag
+    const originalEtag = res1.headers['etag'];
+    const moreOpts = Object.assign({}, options, {headers: {'if-none-match': originalEtag}});
+
+    // Modify the file.
+    fs.readFile(file, 'utf8', function(err, data) {
+      if (err) {
+        t.fail("Couldn't read file");
+        server.close();
+        t.end();
+
+      } else {
+        const re = /'[A-Za-z0-9]+'/g; // Find single quoted string.
+        const newWord = Math.random().toString(36).slice(10);
+
+        const update = data.replace(re, `'${newWord}'`);
+
+        fs.writeFile(file, update, function(err) {
+          if (err) {
+            t.fail("Couldn't write file");
+            server.close();
+            t.end();
+
+          } else {
+            console.log('String successfully updated');
+
+            // Send another request for now modified file with the original etag.
+            http.get(moreOpts, function(res2) {
+              t.equal(res2.statusCode, 200, 'Should return a 200');
+              t.notEqual(res2.headers['etag'], originalEtag);
+              server.close();
+              t.end();
+            });
+          }
+        });
+      }
+    });
   });
 });

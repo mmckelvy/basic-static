@@ -5,19 +5,17 @@ Basic static file serving for use with Node's `http.createServer`.
 `npm install basic-static`
 
 # Examples
-Use as the sole route handler:
 ```
 const basicStatic = require('basic-static');
-const serveStatic = basicStatic({rootDir: __dirname, compress: true});
+const serveStatic = basicStatic({rootDir: process.cwd(), compress: true});
 
+// Set as a route handler using your preferred routing scheme
+routes.set('/static/*', serveStatic);
+
+// Or use as the sole route handler if your server only serves static files
 const server = http.createServer(function(req, res) {
   serveStatic(req, res);
 });
-```
-
-Or add as one of many route handlers:
-```
-routes.set('/static/*', serveStatic);
 ```
 
 # Methodology
@@ -34,7 +32,7 @@ As the name suggests, this module is meant to take care of the essentials and no
 # API
 ### `basicStatic([options])`
 
-### Arguments
+### Params
 #### `options`
 `{Object}` with three properties -- `rootDir`, `cache`, and `compress`.
 
@@ -43,6 +41,9 @@ As the name suggests, this module is meant to take care of the essentials and no
 `options.cache {String}` -- `Cache-Control` headers. Defaults to `max-age=86400` (24 hours).
 
 `options.compress {Boolean}` -- Check for a gzipped version of the file. Does not actually do the compression, just looks for a `.gz` version of the file as appropriate.
+
+### Returns
+A `{Function}` that handles requests and sends the appropriate responses.
 
 # License
 MIT
