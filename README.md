@@ -19,6 +19,9 @@ Or add as one of many route handlers:
 routes.set('/static/*', basicStatic);
 ```
 
+# Test
+`npm test`
+
 # API
 ## basicStatic(req, res, [options])
 
@@ -27,13 +30,13 @@ routes.set('/static/*', basicStatic);
 req, res are the usual Node.js request and response objects (instances of `http.IncomingMessage` and `http.ServerResponse` respectively).
 
 ### options
-`Object` with three properties, `rootDir`, `cache`, and `compress`.
+`{Object}` with three properties -- `rootDir`, `cache`, and `compress`.
 
-`options.rootDir` `{String}` Root directory. Defaults to `process.cwd()`.
+`options.rootDir {String}` -- Root directory. Defaults to `process.cwd()`.
 
-`options.cache` `{String}` `Cache-Control` headers. Defaults to `max-age=86400` (24 hours).
+`options.cache {String}` -- `Cache-Control` headers. Defaults to `max-age=86400` (24 hours).
 
-`options.compress` `{Boolean}` Check for a gzipped version of the file. Note does not actually do the compression, just looks for a `.
+`options.compress {Boolean}` -- Check for a gzipped version of the file. Note does not actually do the compression, just looks for a `.
 gz` version of the file as appropriate.
 
 
