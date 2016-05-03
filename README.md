@@ -23,13 +23,13 @@ routes.set('/static/*', basicStatic);
 `npm test`
 
 # API
-### basicStatic(req, res, [options])
+### `basicStatic(req, res, [options])`
 
-#### req, res
-`Object`
-req, res are the usual Node.js request and response objects (instances of `http.IncomingMessage` and `http.ServerResponse` respectively).
+#### `req, res`
+`Object`:
+`req, res` are the usual Node.js request and response objects (instances of `http.IncomingMessage` and `http.ServerResponse` respectively).
 
-#### options
+#### `options`
 `{Object}` with three properties -- `rootDir`, `cache`, and `compress`.
 
 `options.rootDir {String}` -- Root directory. Defaults to `process.cwd()`.
