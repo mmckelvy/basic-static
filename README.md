@@ -19,6 +19,12 @@ Or add as one of many route handlers:
 routes.set('/static/*', basicStatic);
 ```
 
+# Methodology
+Employs standard strategies to manage static resources:
++ Sets `Cache-Control` headers (default value of `max-age=86400`) to prevent superfluous requests from the browser.
++ Sets an `e-tag` using an md5 hash of the file's inode number and `mTime` (modified time).
++ Checks for a compressed (gzipped) version of the file if `options.compress` is set to true and the `accept-encoding` header is sent with the file request.
+
 # Test
 `npm test`
 
