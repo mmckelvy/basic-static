@@ -4,13 +4,13 @@ const http = require('http');
 const url = require('url');
 const test = require('tape');
 
-const simpleStatic = require('../lib/simple-static');
+const basicStatic = require('../basic-static');
 
 test('Should return a 200 response for a requested file', function(t) {
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname});
+    basicStatic(req, res, {rootDir: __dirname});
   });
 
   server.listen(3000, function() {
@@ -37,7 +37,7 @@ test('Should return a 404 for a file that does not exist', function(t) {
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname});
+    basicStatic(req, res, {rootDir: __dirname});
   });
 
   server.listen(3000, function() {
@@ -64,7 +64,7 @@ test('Should return a 304 for matching etag', function(t) {
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname, cache: 'no-cache'});
+    basicStatic(req, res, {rootDir: __dirname, cache: 'no-cache'});
   });
 
   server.listen(3000, function() {
@@ -101,7 +101,7 @@ test('Should set the proper cache-control header', function(t) {
 
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname, cache: cache});
+    basicStatic(req, res, {rootDir: __dirname, cache: cache});
   });
 
   server.listen(3000, function() {
@@ -127,7 +127,7 @@ test('Should set the proper cache-control header', function(t) {
 test('Should send a 400 for a directory request', function(t) {
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname});
+    basicStatic(req, res, {rootDir: __dirname});
   });
 
   server.listen(3000, function() {
@@ -153,7 +153,7 @@ test('Should send a 400 for a directory request', function(t) {
 test('Should return the proper file headers', function(t) {
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname});
+    basicStatic(req, res, {rootDir: __dirname});
   });
 
   server.listen(3000, function() {
@@ -179,7 +179,7 @@ test('Should return the proper file headers', function(t) {
 test('Should try to serve compressed file if options.compress is true', function(t) {
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname, compress: true});
+    basicStatic(req, res, {rootDir: __dirname, compress: true});
   });
 
   server.listen(3000, function() {
@@ -207,7 +207,7 @@ test('Should try to serve compressed file if options.compress is true', function
 test('Should use uncompressed file if the compressed file does not exist', function(t) {
   // Set up the test server.
   const server = http.createServer(function(req, res) {
-    simpleStatic(req, res, {rootDir: __dirname, compress: true});
+    basicStatic(req, res, {rootDir: __dirname, compress: true});
   });
 
   server.listen(3000, function() {

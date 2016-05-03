@@ -3,14 +3,14 @@
   "description": "A set of simple functions for serving static files",
   "author": "Mark McKelvy",
   "version": "1.0.0",
-  "main": "simple-static.js",
+  "main": "basic-static.js",
   "keywords": [
     "static",
     "files"
   ],
   "repository": {
     "type": "git",
-    "url": "git@github.com:mmckelvy/simple-static.git"
+    "url": "git@github.com:mmckelvy/basic-static.git"
   },
   "license": "MIT",
   "dependencies": {

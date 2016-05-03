@@ -157,7 +157,7 @@ function serveFile(req, res, stats, filePath, cache, compress) {
 *   options.cache {String} Cache-Control headers. Defaults to private, 24hrs.
 *   options.compress {Boolean} Serve a gzipped version of the file.
 */
-function simpleStatic(req, res, options) {
+function basicStatic(req, res, options) {
   if (!options) options = {};
 
   const rootDir = options.rootDir ? options.rootDir : process.cwd();
@@ -200,4 +200,4 @@ function simpleStatic(req, res, options) {
   }
 }
 
-module.exports = simpleStatic;
+module.exports = basicStatic;
