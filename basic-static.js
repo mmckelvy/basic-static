@@ -147,14 +147,14 @@ function serveFile(req, res, stats, filePath, cache, compress) {
 }
 
 /**
-* @function serveStaticContent
+* @function basicStatic
 * @public
 *
 * @param: req {Object} Node request object.
 * @param: res {Object} Node response object.
 * @param: options {Object} Possible options are as follows:
 *   options.rootDir {String} Root directory. Defaults to process.cwd()
-*   options.cache {String} Cache-Control headers. Defaults to private, 24hrs.
+*   options.cache {String} Cache-Control headers. Defaults to 24hrs.
 *   options.compress {Boolean} Serve a gzipped version of the file.
 */
 function basicStatic(req, res, options) {
