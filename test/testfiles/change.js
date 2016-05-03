@@ -1,5 +1,5 @@
 function hello() {
-  const str = 'gqaw4ydqgxkxfxbt9';
+  const str = '17t1mcvy3nxpnl8fr';
 
   return str;
 }

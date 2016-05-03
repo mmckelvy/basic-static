@@ -26,7 +26,7 @@ Employs standard strategies to manage static resources:
 
 All files are served by piping a readable stream to Node's writable response stream.
 
-As the name suggests, this module is meant to take care of the essentials and not much more. It assumes you are serving files from a relatively simple structure with a reasonable URL and you are good with strong e-tags and gzip compression.
+As the name suggests, this module is meant to take care of the essentials and not much more. It assumes you are serving files from a relatively simple structure with a reasonable URL and you are good with strong e-tags.
 
 # Test
 `npm test`
