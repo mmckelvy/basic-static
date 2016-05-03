@@ -65,7 +65,7 @@ function checkCompress(basePath, callback) {
   fs.stat(gPath, function(err, stats) {
     if (err || !stats.isFile()) return callback(null, basePath);
 
-    callback(null, basePath);
+    callback(null, gPath);
   });
 }
 
@@ -115,10 +115,9 @@ function should304(req, stats) {
 * @param: stats {Object} Results from a Node fs.stat call.
 * @param: filePath {String} The full file path for the static resource.
 * @param: cache {String} Cache-Control headers. Defaults to private, 24hrs.
-* @param: compress {Boolean} Specifies whether compression headers should be set.
 *
 */
-function serveFile(req, res, stats, filePath, cache, compress) {
+function serveFile(req, res, stats, filePath, cache) {
   const stream = fs.createReadStream(filePath);
 
   stream.on('error', function(err) {
@@ -128,7 +127,7 @@ function serveFile(req, res, stats, filePath, cache, compress) {
     res.end(JSON.stringify(error));
   });
 
-  if (compress) {
+  if (path.extname(filePath) === '.gz') {
     res.writeHead(200, {
       'Content-Type': mime.lookup(filePath),
       'ETag': createServerEtag(stats.ino, stats.mtime),
@@ -181,7 +180,7 @@ function basicStatic(options) {
 
           } else {
             const cache = options.cache ? options.cache : 'max-age=86400';
-            serveFile(req, res, stats, filePath, cache, compress);
+            serveFile(req, res, stats, filePath, cache);
           }
         });
       });

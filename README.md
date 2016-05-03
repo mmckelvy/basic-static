@@ -29,7 +29,15 @@ All files are served by piping a readable stream to Node's writable response str
 As the name suggests, this module is meant to take care of the essentials and not much more. It assumes you are serving files from a relatively simple structure with a reasonable URL and you are good with strong e-tags.
 
 # Test
-`npm test`
+`npm test` to run the unit tests.
+To run tests in dev mode (so you can see console.logs) run `npm run dev-test`.
+
+You can also start a test server to make sure all the files are being decoded / served properly in a browser:
+`cd test`
+
+`node test-server.js`
+
+Navigate to `localhost:3000` in your browser.
 
 # API
 ### `basicStatic([options])`

@@ -273,7 +273,7 @@ test('Should use uncompressed file if the compressed file does not exist', funct
 
   http.get(options, function(res) {
     t.equal(res.statusCode, 200);
-
+    t.notOk(res.headers['content-encoding'], 'Should not have the content-encoding header');
     server.close();
     t.end();
   });
@@ -284,7 +284,6 @@ test('Should send a 200 and a new etag if file changes', function(t) {
   const path = require('path');
 
   const file = path.join(__dirname, 'testfiles', 'change.js');
-  console.log('THE FILE', file);
   const serveStatic = basicStatic({rootDir: __dirname, cache: 'no-cache'});
 
   const server = http.createServer(function(req, res) {
