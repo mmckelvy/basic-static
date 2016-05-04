@@ -2,7 +2,7 @@
   "name": "basic-static",
   "description": "Basic static file serving for use with Node's http.createServer",
   "author": "Mark McKelvy",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "main": "basic-static.js",
   "keywords": [
     "static",
