@@ -245,6 +245,7 @@ test('Should try to serve compressed file if options.compress is true', function
 
   http.get(options, function(res) {
     t.equal(res.headers['content-encoding'], 'gzip', 'Set proper encoding');
+    t.equal(res.headers['content-type'], 'application/javascript')
 
     server.close();
     t.end();

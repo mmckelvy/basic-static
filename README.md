@@ -33,6 +33,7 @@ As the name suggests, this module is meant to take care of the essentials and no
 To run tests in dev mode (so you can see console.logs) run `npm run dev-test`.
 
 You can also start a test server to make sure all the files are being decoded / served properly in a browser:
+
 `cd test`
 
 `node test-server.js`

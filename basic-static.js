@@ -129,7 +129,7 @@ function serveFile(req, res, stats, filePath, cache) {
 
   if (path.extname(filePath) === '.gz') {
     res.writeHead(200, {
-      'Content-Type': mime.lookup(filePath),
+      'Content-Type': mime.lookup(filePath.replace('.gz', '')),
       'ETag': createServerEtag(stats.ino, stats.mtime),
       'Cache-Control': cache,
       'Content-Encoding': 'gzip',
